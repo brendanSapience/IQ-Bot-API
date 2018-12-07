@@ -8,8 +8,8 @@ IQ Bot version 5.3+
 
 ### Getting Started
 
-1- Download the dll file from the Delivery folder, add it to your .NET project
-2- Use the following code to initiate the API:
+* Download the dll file from the Delivery folder, add it to your .NET project
+* Use the following code to initiate the API:
 
 ```         
            // initiate the broker
