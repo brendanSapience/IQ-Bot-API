@@ -13,7 +13,7 @@ namespace ConsoleAppTests
         static void Main(string[] args)
         {
             Console.WriteLine("Initiating Broker.");
-            ConnectionBroker broker = new ConnectionBroker("localhost",1434,"aaadmin","Un1ver$e1234");
+            ConnectionBroker broker = new ConnectionBroker("localhost",1434,"aaadmin","Un1ver$e123");
             broker.initiateSQLConnection();
             DBAPICalls apicalls = new IQBotAPILibrary.DBAPICalls(broker);
 
