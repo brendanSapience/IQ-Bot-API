@@ -13,7 +13,7 @@ IQ Bot version 5.3+
 
 ```         
            // initiate the broker
-            ConnectionBroker broker = new ConnectionBroker("localhost",1434,"aaadmin","Un1ver$e123");
+            ConnectionBroker broker = new ConnectionBroker("localhost",1434,"aaadmin","password");
             // initiate the SQL Connection
             broker.initiateSQLConnection();
             // initiate the apicalls library
