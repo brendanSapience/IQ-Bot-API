@@ -6,6 +6,22 @@ Automation Anywhere IQ Bot API
 
 IQ Bot version 5.3+
 
+### Getting Started
+
+1- Download the dll file from the Delivery folder, add it to your .NET project
+2- Use the following code to initiate the API:
+
+```         
+           // initiate the broker
+            ConnectionBroker broker = new ConnectionBroker("localhost",1434,"aaadmin","Un1ver$e123");
+            // initiate the SQL Connection
+            broker.initiateSQLConnection();
+            // initiate the apicalls library
+            DBAPICalls apicalls = new IQBotAPILibrary.DBAPICalls(broker);
+            // submit api calls
+            String resp = apicalls.GetIQBotLearningInstances();
+```
+
 
 ### Available Functions (SP0)
 
@@ -15,6 +31,7 @@ IQ Bot version 5.3+
 ### Formats
 
 All Responses are in JSON format
+
 
 ## Authors
 
