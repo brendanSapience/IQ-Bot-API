@@ -12,14 +12,17 @@ IQ Bot version 5.3+
 * Use the following code to initiate the API:
 
 ```         
-           // initiate the broker
-            ConnectionBroker broker = new ConnectionBroker("localhost",1434,"aaadmin","password");
-            // initiate the SQL Connection
-            broker.initiateSQLConnection();
-            // initiate the apicalls library
-            DBAPICalls apicalls = new IQBotAPILibrary.DBAPICalls(broker);
-            // submit api calls
-            String resp = apicalls.GetIQBotLearningInstances();
+            // initiate the broker for SQL and for Rest
+            ConnectionBroker broker = new ConnectionBroker("localhost",1434,"aaadmin","Un1ver$e123");
+            ConnectionBroker rbroker = new ConnectionBroker("http://localhost", 3000, @"creator", @"Un1ver$e",9996);
+
+            // initiate the apicalls libraries
+            _530ReadDBAPICalls apicallsR = new IQBotAPILibrary._530ReadDBAPICalls(broker);
+            _530WriteDBAPICalls apicallsW = new IQBotAPILibrary._530WriteDBAPICalls(broker);
+            _530ReadRestAPICalls apicallsRest = new _530ReadRestAPICalls(rbroker);
+
+            // submit Rest api calls
+            resp = apicallsRest.GetAllLearningInstances();
 ```
 
 
