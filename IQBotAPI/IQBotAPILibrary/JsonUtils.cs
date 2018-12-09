@@ -367,6 +367,23 @@ namespace IQBotAPILibrary
             Resp = Resp + InnerResp.TrimEnd(',') + "]}";
             return Resp;
         }
+
+        public static String getGroupFromFileAsJson(SqlDataReader sdr)
+        {
+            String Resp = "{";
+            while (sdr.Read())
+            {
+                String FileName = sdr["filename"].ToString();
+                String Group = sdr["classificationid"].ToString();
+
+                Resp = Resp + "\"FileName\":" + "\"" + FileName + "\"";
+                Resp = Resp + ",";
+                Resp = Resp + "\"Group\":" + "\"" + Group + "\"";
+
+            }
+            Resp = Resp + "}";
+            return Resp;
+        }
     }
 
 }

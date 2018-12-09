@@ -4,20 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using IQBotAPILibrary.JsonObjects;
+using Newtonsoft.Json;
 
 namespace IQBotAPILibrary
 {
     public class ConnectionBroker
     {
+        Boolean IsSqlConnectionOK = false;
+        Boolean IsRestConnectionOK = false;
+
+        public String RestEndpointURL = "";
+        String RestLogin = "";
+        String RestPassword = "";
+        public int RestAuthEndpointPort = 3000;
+        public int RestAliasPort = 9996;
+        public String RestAuthToken = "";
+
         String SQLServerHostname = "";
-        String RestEndpointURL = "";
         int SQLServerPort = 1433;
         String SQLUser = "";
         String SQLPassword = "";
-        String RestLogin = "";
-        String RestPassword = "";
-        int RestAuthEndpointPort = 3000;
-        int RestEndpointPort = 3000;
+       
+
         String DBName_AliasData = "AliasData";
         String DBName_ClassifierData = "ClassifierData";
         String DBName_Configurations = "Configurations";
@@ -32,9 +41,53 @@ namespace IQBotAPILibrary
             this.SQLServerPort = SQLPort;
             this.SQLUser = SQLLogin;
             this.SQLPassword = SQLPassword;
+
+            Boolean ConnectionIsOK = initiateSQLConnection();
+            if (!ConnectionIsOK)
+            {
+                Console.WriteLine(" -- Error: SQL Connection Could Not Be Established.");
+                Console.ReadKey();
+                System.Environment.Exit(1);
+            }
+            IsSqlConnectionOK = true;
         }
 
+        public ConnectionBroker(String RestBaseURI, int RestAuthPort, String Login, String Password,int AliasServicePort)
+        {
+            this.RestEndpointURL = RestBaseURI;
+            this.RestAuthEndpointPort = RestAuthPort;
+            this.RestLogin = Login;
+            this.RestPassword = Password;
+            this.RestAliasPort = AliasServicePort;
+            Boolean ConnectionIsOK = testRestConnection();
+            if (!ConnectionIsOK)
+            {
+                Console.WriteLine(" -- Error: REST Connection Could Not Be Established.");
+                Console.ReadKey();
+                System.Environment.Exit(1);
+            }
+            IsRestConnectionOK = true;
+        }
 
+        public Boolean testRestConnection()
+        {
+            String URL = this.RestEndpointURL + ":" + this.RestAuthEndpointPort + "/api/authenticate";
+            string json = "{ \"username\" : \""+this.RestLogin+"\", \"password\" : \""+this.RestPassword+"\" }";
+
+            String resp = RestUtils.SendAuthRequest(URL, json);
+
+            AuthResponse r = JsonConvert.DeserializeObject<AuthResponse>(resp);
+
+            if (!r.success)
+            {
+                Console.WriteLine(" -- Error: REST Authentication failed. Details: "+r.errors[0]);
+                return false;
+            }
+
+            this.RestAuthToken = r.data.token;
+            return true;
+
+        }
         public Boolean testSQLConnection()
         {
             try

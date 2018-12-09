@@ -17,18 +17,16 @@ namespace ConsoleAppTests
             String resp = "";
             // initiate the broker
             ConnectionBroker broker = new ConnectionBroker("localhost",1434,"aaadmin","Un1ver$e123");
-            // initiate the SQL Connection
-            Boolean ConnectionOK = broker.initiateSQLConnection();
+            ConnectionBroker rbroker = new ConnectionBroker("http://localhost", 3000, @"creator", @"Un1ver$e",9996);
 
-            if (!ConnectionOK){
-                Console.WriteLine(" -- Error: Connection Could Not Be Established.");
-                Console.ReadKey();
-                System.Environment.Exit(1);
-            }
 
             // initiate the apicalls library
             _530ReadDBAPICalls apicallsR = new IQBotAPILibrary._530ReadDBAPICalls(broker);
             _530WriteDBAPICalls apicallsW = new IQBotAPILibrary._530WriteDBAPICalls(broker);
+            _530ReadRestAPICalls apicallsRest = new _530ReadRestAPICalls(rbroker);
+
+            // submit Rest api calls
+            resp = apicallsRest.GetAllLearningInstances();
 
             // submit READ api calls
 
@@ -41,7 +39,8 @@ namespace ConsoleAppTests
             //resp = apicallsR.GetExportImportActivities();
             //resp = apicallsR.GetListOfCorrectedValues();
             //resp = apicallsR.GetListOfDomains();
-            resp = apicallsR.GetListOfLanguages();
+            //resp = apicallsR.GetListOfLanguages();
+            //resp = apicallsR.GetGroupFromFilename("1001748643.pdf");
 
             // submit WRITE api calls
             //apicallsW.SetLearningInstanceName("01bc3faa-191f-4921-a3fc-5f71c60d723e", "Test123");

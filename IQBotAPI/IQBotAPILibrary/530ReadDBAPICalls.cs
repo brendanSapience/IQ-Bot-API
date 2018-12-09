@@ -35,6 +35,13 @@ namespace IQBotAPILibrary
             return JsonUtils.getFileListAsJson(sqlr);
         }
 
+        public String GetLIUnclassifiedFiles(String LearningInstanceID)
+        {
+            //'8c554e14-8e1f-437e-aeec-8f363627eb6f'
+            SqlDataReader sqlr = this.broker.runQuery("FileManager", "SELECT * FROM FileDetails where projectid = '" + LearningInstanceID + "' AND classificationid='-1'");
+            return JsonUtils.getFileListAsJson(sqlr);
+        }
+
         public String GetLIDetails(String LearningInstanceID)
         {
             //'8c554e14-8e1f-437e-aeec-8f363627eb6f'
@@ -90,6 +97,14 @@ namespace IQBotAPILibrary
         {
             SqlDataReader sqlr = this.broker.runQuery("AliasData", "SELECT * FROM LanguageMaster");
             return JsonUtils.getLanguageListAsJson(sqlr);
+        }
+
+        //SELECT distinct filename,classificationid from [FileManager].[dbo].[FileDetails] where filename='1001748643.pdf';
+        public String GetGroupFromFilename(String FileName)
+        {
+            String SQLQuery = "SELECT distinct filename,classificationid from [FileManager].[dbo].[FileDetails] where filename='" + FileName + "';";
+            SqlDataReader sqlr = this.broker.runQuery("FileManager", SQLQuery);
+            return JsonUtils.getGroupFromFileAsJson(sqlr);
         }
     }
 }
