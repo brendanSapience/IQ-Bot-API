@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+
 
 namespace IQBotAPILibrary
 {
-
-    public class DBAPICalls
+    public class _530ReadDBAPICalls
     {
         ConnectionBroker broker;
-        public DBAPICalls(ConnectionBroker broker)
+        public _530ReadDBAPICalls(ConnectionBroker broker)
         {
             this.broker = broker;
         }
@@ -31,7 +31,7 @@ namespace IQBotAPILibrary
         public String GetLIFiles(String LearningInstanceID)
         {
             //'8c554e14-8e1f-437e-aeec-8f363627eb6f'
-            SqlDataReader sqlr = this.broker.runQuery("FileManager", "SELECT * FROM FileDetails where projectid = '"+ LearningInstanceID + "'");
+            SqlDataReader sqlr = this.broker.runQuery("FileManager", "SELECT * FROM FileDetails where projectid = '" + LearningInstanceID + "'");
             return JsonUtils.getFileListAsJson(sqlr);
         }
 

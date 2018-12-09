@@ -40,12 +40,12 @@ namespace IQBotAPILibrary
             try
             {
                 this.myConnection.Open();
-                Console.WriteLine("Connection String: "+ this.myConnection.ConnectionString);
+                //Console.WriteLine("Connection String: "+ this.myConnection.ConnectionString);
                 
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e.Message);
                 return false;
             }
             return true;
@@ -55,10 +55,12 @@ namespace IQBotAPILibrary
         {
             String connectionString = @"Data Source="+this.SQLServerHostname+","+
                 this.SQLServerPort+";Trusted_Connection=yes;connection timeout=30;Initial Catalog="+
-                this.DBName_Configurations+";User ID="+this.SQLUser+";Password="+this.SQLPassword+"";
+                this.DBName_Configurations+";User ID="+this.SQLUser+";Password="+this.SQLPassword+ ";integrated security=false";
 
-            Console.WriteLine(connectionString);
+            //Console.WriteLine(connectionString);
+            
             this.myConnection = new SqlConnection(connectionString);
+            
             Boolean ConnStatus = testSQLConnection();
             if (!ConnStatus)
             {

@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="530ReadDBAPICalls.cs" />
+    <Compile Include="530WriteDBAPICalls.cs" />
     <Compile Include="ConnectionBroker.cs" />
     <Compile Include="DBAPICalls.cs" />
     <Compile Include="JsonUtils.cs" />
