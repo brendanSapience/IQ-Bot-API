@@ -5,6 +5,11 @@ Automation Anywhere IQ Bot API
 ### Prerequisites
 
 IQ Bot version 5.3+
+Not tested with IQ Bot v6.0
+
+### General Info
+
+this API combines calls that are SQL Based and calls that are Rest based.
 
 ### Getting Started
 
@@ -28,8 +33,27 @@ IQ Bot version 5.3+
 
 ### Available Functions (SP0)
 
+SQL Based Calls:
+
 * GetIQBotConfiguration
 * GetIQBotLearningInstances
+* GetLIFiles
+* GetLIUnclassifiedFiles
+* GetLIDetails
+* GetFileDetails
+* GetClassificationReport
+* GetCustomFields
+* GetInvalidFiles
+* GetExportImportActivities
+* GetListOfCorrectedValues
+* GetListOfDomains
+* GetListOfLanguages
+* GetGroupFromFilename
+* SetLearningInstanceName
+
+Rest Based Calls:
+
+* GetAllLearningInstances
 
 ### Formats
 
