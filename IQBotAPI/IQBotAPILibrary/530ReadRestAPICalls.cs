@@ -8,8 +8,8 @@ namespace IQBotAPILibrary
 {
     public class _530ReadRestAPICalls
     {
-        ConnectionBroker broker;
-        public _530ReadRestAPICalls(ConnectionBroker broker)
+        IQBotConnectionBroker broker;
+        public _530ReadRestAPICalls(IQBotConnectionBroker broker)
         {
             this.broker = broker;
         }
@@ -17,8 +17,8 @@ namespace IQBotAPILibrary
         public String GetAllLearningInstances()
         {
             String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/api/projects";
-            String MyResp = RestUtils.SendGetRequest(Req,this.broker.RestAuthToken);
-            return MyResp;
+            RestResponse MyResp = RestUtils.SendGetRequest(Req,this.broker.RestAuthToken);
+            return MyResp.RetResponse;
         }
     }
 }

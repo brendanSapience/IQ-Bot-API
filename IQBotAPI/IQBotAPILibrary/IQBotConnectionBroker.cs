@@ -9,23 +9,25 @@ using Newtonsoft.Json;
 
 namespace IQBotAPILibrary
 {
-    public class ConnectionBroker
+    public class IQBotConnectionBroker
     {
         Boolean IsSqlConnectionOK = false;
         Boolean IsRestConnectionOK = false;
 
+        
         public String RestEndpointURL = "";
         String RestLogin = "";
         String RestPassword = "";
         public int RestAuthEndpointPort = 3000;
         public int RestAliasPort = 9996;
         public String RestAuthToken = "";
+        public int CRPort = 8080;
 
         String SQLServerHostname = "";
         int SQLServerPort = 1433;
         String SQLUser = "";
         String SQLPassword = "";
-       
+        int IQBotMajorVersion = -1;
 
         String DBName_AliasData = "AliasData";
         String DBName_ClassifierData = "ClassifierData";
@@ -35,7 +37,7 @@ namespace IQBotAPILibrary
 
         SqlConnection myConnection;
 
-        public ConnectionBroker(String SQLHost, int SQLPort, String SQLLogin, String SQLPassword)
+        public IQBotConnectionBroker(String SQLHost, int SQLPort, String SQLLogin, String SQLPassword)
         {
             this.SQLServerHostname = SQLHost;
             this.SQLServerPort = SQLPort;
@@ -52,14 +54,34 @@ namespace IQBotAPILibrary
             IsSqlConnectionOK = true;
         }
 
-        public ConnectionBroker(String RestBaseURI, int RestAuthPort, String Login, String Password,int AliasServicePort)
+        public IQBotConnectionBroker(int MajorVersion, String RestBaseURI, int RestAuthPort,int CRPort, String Login, String Password,int AliasServicePort)
         {
             this.RestEndpointURL = RestBaseURI;
             this.RestAuthEndpointPort = RestAuthPort;
             this.RestLogin = Login;
             this.RestPassword = Password;
             this.RestAliasPort = AliasServicePort;
-            Boolean ConnectionIsOK = testRestConnection();
+            this.IQBotMajorVersion = MajorVersion;
+            this.CRPort = CRPort;
+
+            Boolean ConnectionIsOK = false;
+
+            switch (this.IQBotMajorVersion)
+            {
+                case 5:
+                    
+                    ConnectionIsOK = testRestConnectionv5();
+                    break;
+                case 6:
+                    ConnectionIsOK = testRestConnectionv6();
+                    break;
+                default:
+                    Console.WriteLine("-- Error, IQ Bot Version not supported: "+this.IQBotMajorVersion);
+                    Environment.Exit(-1);
+                    break;
+            }
+
+            
             if (!ConnectionIsOK)
             {
                 Console.WriteLine(" -- Error: REST Connection Could Not Be Established.");
@@ -69,14 +91,14 @@ namespace IQBotAPILibrary
             IsRestConnectionOK = true;
         }
 
-        public Boolean testRestConnection()
+        public Boolean testRestConnectionv5()
         {
             String URL = this.RestEndpointURL + ":" + this.RestAuthEndpointPort + "/api/authenticate";
             string json = "{ \"username\" : \""+this.RestLogin+"\", \"password\" : \""+this.RestPassword+"\" }";
 
-            String resp = RestUtils.SendAuthRequest(URL, json);
-
-            AuthResponse r = JsonConvert.DeserializeObject<AuthResponse>(resp);
+            RestResponse resp = RestUtils.SendAuthRequest(URL, json,this.IQBotMajorVersion);
+            Console.WriteLine("Debug:" + resp);
+            AuthResponsev5 r = JsonConvert.DeserializeObject<AuthResponsev5>(resp.RetResponse);
 
             if (!r.success)
             {
@@ -88,6 +110,29 @@ namespace IQBotAPILibrary
             return true;
 
         }
+
+        public Boolean testRestConnectionv6()
+        {
+            String URL = this.RestEndpointURL + ":" + this.CRPort + "/v1/authentication";
+            string json = "{ \"username\" : \"" + this.RestLogin + "\", \"password\" : \"" + this.RestPassword + "\" }";
+
+            RestResponse resp = RestUtils.SendAuthRequest(URL, json, this.IQBotMajorVersion);
+            Console.WriteLine("Debug:" + resp);
+
+            //AuthResponsev6_401
+            AuthResponsev6 r = JsonConvert.DeserializeObject<AuthResponsev6>(resp.RetResponse);
+
+            if (r.token != null)
+            {
+                Console.WriteLine(" -- Error: REST Authentication failed.");
+                return false;
+            }
+
+            this.RestAuthToken = r.token;
+            return true;
+
+        }
+
         public Boolean testSQLConnection()
         {
             try

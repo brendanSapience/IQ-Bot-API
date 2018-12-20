@@ -9,8 +9,8 @@ namespace IQBotAPILibrary
 {
     public class _530WriteDBAPICalls
     {
-        ConnectionBroker broker;
-        public _530WriteDBAPICalls(ConnectionBroker broker)
+        IQBotConnectionBroker broker;
+        public _530WriteDBAPICalls(IQBotConnectionBroker broker)
         {
             this.broker = broker;
         }

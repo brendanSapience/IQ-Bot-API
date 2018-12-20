@@ -10,8 +10,8 @@ namespace IQBotAPILibrary
 {
     public class _530ReadDBAPICalls
     {
-        ConnectionBroker broker;
-        public _530ReadDBAPICalls(ConnectionBroker broker)
+        IQBotConnectionBroker broker;
+        public _530ReadDBAPICalls(IQBotConnectionBroker broker)
         {
             this.broker = broker;
         }

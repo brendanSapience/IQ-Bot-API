@@ -47,7 +47,11 @@
     <Compile Include="530ReadDBAPICalls.cs" />
     <Compile Include="530ReadRestAPICalls.cs" />
     <Compile Include="530WriteDBAPICalls.cs" />
-    <Compile Include="ConnectionBroker.cs" />
+    <Compile Include="CRCalls\CRRestUtils.cs" />
+    <Compile Include="CRCalls\Resps\GenericJSONResponses.cs" />
+    <Compile Include="CRCalls\Rest\v11RestAPICalls.cs" />
+    <Compile Include="CRConnectionBroker.cs" />
+    <Compile Include="IQBotConnectionBroker.cs" />
     <Compile Include="DBAPICalls.cs" />
     <Compile Include="JsonObjects\AuthResponse.cs" />
     <Compile Include="JsonUtils.cs" />
@@ -56,6 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CRCalls\DB\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
