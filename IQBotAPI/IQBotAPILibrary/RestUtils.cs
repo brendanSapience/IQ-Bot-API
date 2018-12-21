@@ -74,12 +74,25 @@ namespace IQBotAPILibrary
             }
         }
 
-        public static RestResponse SendGetRequest(String URL,String AuthToken)
+        public static RestResponse SendGetRequest(String URL,String AuthToken,int MajorVersion)
         {
 
             System.Net.HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(URL);
             httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Headers["x-access-token"] = AuthToken;
+            switch (MajorVersion)
+            {
+                case 5:
+                    httpWebRequest.Headers["x-auth-token"] = AuthToken;
+                    break;
+                case 6:
+                    httpWebRequest.Headers["x-authorization"] = AuthToken;
+                    break;
+                default:
+                    httpWebRequest.Headers["x-authorization"] = AuthToken;
+                    break;
+            }
+
+            
             httpWebRequest.Method = "GET";
 
             try

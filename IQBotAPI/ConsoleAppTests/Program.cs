@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IQBotAPILibrary;
 using IQBotAPILibrary.CRCalls.Rest;
+using IQBotAPILibrary.IQBotCalls.Rest;
 
 namespace ConsoleAppTests
 {
@@ -18,20 +19,22 @@ namespace ConsoleAppTests
             String resp = "";
             // initiate the broker
             //IQBotConnectionBroker broker = new IQBotConnectionBroker("localhost",1434,"aaadmin","Un1ver$e123");
-            //IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6,"http://localhost", 3000,8080, @"iqbot1", @"Un1ver$e123",9996);
+            IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6,"http://localhost", 3000,8080, @"iqbot1", @"Un1ver$e123",9996);
 
-            CRConnectionBroker crbroker = new CRConnectionBroker(11, "http://localhost", 8080, @"iqbot1", @"Un1ver$e123");
+            //CRConnectionBroker crbroker = new CRConnectionBroker(11, "http://localhost", 8080, @"iqbot1", @"Un1ver$e123");
 
-            v11RestAPICalls apicallsCR = new v11RestAPICalls(crbroker);
-            resp = apicallsCR.getTaskBots();
+            //v11RestAPICalls apicallsCR = new v11RestAPICalls(crbroker);
+            //resp = apicallsCR.getTaskBots();
 
             // initiate the apicalls library
-           // _530ReadDBAPICalls apicallsR = new IQBotAPILibrary._530ReadDBAPICalls(broker);
+            // _530ReadDBAPICalls apicallsR = new IQBotAPILibrary._530ReadDBAPICalls(broker);
             //_530WriteDBAPICalls apicallsW = new IQBotAPILibrary._530WriteDBAPICalls(broker);
-           // _530ReadRestAPICalls apicallsRest = new _530ReadRestAPICalls(rbroker);
+            _600ReadRestAPICalls apicallsRest = new _600ReadRestAPICalls(rbroker);
 
             // submit Rest api calls
             //resp = apicallsRest.GetAllLearningInstances();
+            //resp = apicallsRest.GetLiNameFromLiID("093ba2fe-830f-45ab-9877-a7c28d80aa68");
+            resp = apicallsRest.GetAllGroupsFromLIName("ABC - Invoices - English - 1");
 
             // submit READ api calls
 

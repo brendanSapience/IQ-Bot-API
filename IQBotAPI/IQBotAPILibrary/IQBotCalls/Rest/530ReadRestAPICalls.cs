@@ -17,7 +17,8 @@ namespace IQBotAPILibrary
         public String GetAllLearningInstances()
         {
             String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/api/projects";
-            RestResponse MyResp = RestUtils.SendGetRequest(Req,this.broker.RestAuthToken);
+            RestResponse MyResp = RestUtils.SendGetRequest(Req,this.broker.RestAuthToken,this.broker.IQBotMajorVersion);
+
             return MyResp.RetResponse;
         }
     }

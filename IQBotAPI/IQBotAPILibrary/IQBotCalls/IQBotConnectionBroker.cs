@@ -27,7 +27,7 @@ namespace IQBotAPILibrary
         int SQLServerPort = 1433;
         String SQLUser = "";
         String SQLPassword = "";
-        int IQBotMajorVersion = -1;
+        public int IQBotMajorVersion = -1;
 
         String DBName_AliasData = "AliasData";
         String DBName_ClassifierData = "ClassifierData";
@@ -117,12 +117,12 @@ namespace IQBotAPILibrary
             string json = "{ \"username\" : \"" + this.RestLogin + "\", \"password\" : \"" + this.RestPassword + "\" }";
 
             RestResponse resp = RestUtils.SendAuthRequest(URL, json, this.IQBotMajorVersion);
-            Console.WriteLine("Debug:" + resp);
+            //Console.WriteLine("Debug:" + resp.RetResponse);
 
             //AuthResponsev6_401
             AuthResponsev6 r = JsonConvert.DeserializeObject<AuthResponsev6>(resp.RetResponse);
 
-            if (r.token != null)
+            if (r.token == null)
             {
                 Console.WriteLine(" -- Error: REST Authentication failed.");
                 return false;
