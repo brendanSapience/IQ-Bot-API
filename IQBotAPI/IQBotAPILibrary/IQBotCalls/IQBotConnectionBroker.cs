@@ -21,7 +21,7 @@ namespace IQBotAPILibrary
         public int RestAuthEndpointPort = 3000;
         public int RestAliasPort = 9996;
         public String RestAuthToken = "";
-        public int CRPort = 8080;
+        //public int CRPort = 8080;
 
         String SQLServerHostname = "";
         int SQLServerPort = 1433;
@@ -54,7 +54,7 @@ namespace IQBotAPILibrary
             IsSqlConnectionOK = true;
         }
 
-        public IQBotConnectionBroker(int MajorVersion, String RestBaseURI, int RestAuthPort,int CRPort, String Login, String Password,int AliasServicePort)
+        public IQBotConnectionBroker(int MajorVersion, String RestBaseURI, int RestAuthPort, String Login, String Password,int AliasServicePort)
         {
             this.RestEndpointURL = RestBaseURI;
             this.RestAuthEndpointPort = RestAuthPort;
@@ -62,16 +62,12 @@ namespace IQBotAPILibrary
             this.RestPassword = Password;
             this.RestAliasPort = AliasServicePort;
             this.IQBotMajorVersion = MajorVersion;
-            this.CRPort = CRPort;
+            //this.CRPort = CRPort;
 
             Boolean ConnectionIsOK = false;
 
             switch (this.IQBotMajorVersion)
             {
-                case 5:
-                    
-                    ConnectionIsOK = testRestConnectionv5();
-                    break;
                 case 6:
                     ConnectionIsOK = testRestConnectionv6();
                     break;
@@ -97,7 +93,7 @@ namespace IQBotAPILibrary
             string json = "{ \"username\" : \""+this.RestLogin+"\", \"password\" : \""+this.RestPassword+"\" }";
 
             RestResponse resp = RestUtils.SendAuthRequest(URL, json,this.IQBotMajorVersion);
-            Console.WriteLine("Debug:" + resp);
+            
             AuthResponsev5 r = JsonConvert.DeserializeObject<AuthResponsev5>(resp.RetResponse);
 
             if (!r.success)
@@ -113,12 +109,13 @@ namespace IQBotAPILibrary
 
         public Boolean testRestConnectionv6()
         {
-            String URL = this.RestEndpointURL + ":" + this.CRPort + "/v1/authentication";
+            String URL = this.RestEndpointURL + ":" + this.RestAuthEndpointPort + "/v1/authentication";
+            
             string json = "{ \"username\" : \"" + this.RestLogin + "\", \"password\" : \"" + this.RestPassword + "\" }";
-
+            //Console.WriteLine("Debug:" + URL+":"+json);
             RestResponse resp = RestUtils.SendAuthRequest(URL, json, this.IQBotMajorVersion);
             //Console.WriteLine("Debug:" + resp.RetResponse);
-
+           
             //AuthResponsev6_401
             AuthResponsev6 r = JsonConvert.DeserializeObject<AuthResponsev6>(resp.RetResponse);
 

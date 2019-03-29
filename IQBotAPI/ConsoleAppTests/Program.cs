@@ -19,7 +19,7 @@ namespace ConsoleAppTests
             String resp = "";
             // initiate the broker
             //IQBotConnectionBroker broker = new IQBotConnectionBroker("localhost",1434,"aaadmin","Un1ver$e123");
-            IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6,"http://localhost", 3000,8080, @"iqbot1", @"Un1ver$e123",9996);
+            IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6,"http://localhost",81, @"iqbot", @"Un1ver$e123",9996);
 
             //CRConnectionBroker crbroker = new CRConnectionBroker(11, "http://localhost", 8080, @"iqbot1", @"Un1ver$e123");
 
@@ -32,9 +32,10 @@ namespace ConsoleAppTests
             _600ReadRestAPICalls apicallsRest = new _600ReadRestAPICalls(rbroker);
 
             // submit Rest api calls
-            //resp = apicallsRest.GetAllLearningInstances();
-            //resp = apicallsRest.GetLiNameFromLiID("093ba2fe-830f-45ab-9877-a7c28d80aa68");
-            resp = apicallsRest.GetAllGroupsFromLIName("ABC - Invoices - English - 1");
+            //resp = apicallsRest.GetAllLearningInstances(false);
+            //resp = apicallsRest.GetLiNameFromLiID("2f22acc3-9e04-4fd4-9d61-6c4a3ded72e6",false);
+            //resp = apicallsRest.GetAllGroupsFromLIName("Test Instance - 1");
+            resp = apicallsRest.GetAllGroupsFromLIID("2f22acc3-9e04-4fd4-9d61-6c4a3ded72e6",false);
 
             // submit READ api calls
 
@@ -54,7 +55,7 @@ namespace ConsoleAppTests
             //apicallsW.SetLearningInstanceName("01bc3faa-191f-4921-a3fc-5f71c60d723e", "Test123");
 
 
-            Console.WriteLine("Response:"+ resp);
+            Console.WriteLine(resp);
 
             Console.ReadKey();
 

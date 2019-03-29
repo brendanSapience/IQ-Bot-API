@@ -10,6 +10,23 @@ namespace IQBotAPILibrary
     class JsonUtils
     {
 
+        public static String getCSVStringFromArray(List<String> list,String Separator)
+        {
+            String RESPONSE ="";
+            foreach(var str in list)
+            {
+                if (RESPONSE == "")
+                {
+                    RESPONSE = str;
+                }
+                else
+                {
+                    RESPONSE = RESPONSE + Separator + str;
+                }
+                
+            }
+            return RESPONSE;
+        }
         public static String getConfigAsJson(SqlDataReader sdr)
         {
             String Resp = "{";
