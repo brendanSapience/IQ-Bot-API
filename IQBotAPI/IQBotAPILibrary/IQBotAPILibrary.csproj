@@ -58,6 +58,7 @@
     <Compile Include="JsonObjects\AuthResponse.cs" />
     <Compile Include="JsonObjects\GroupsList.cs" />
     <Compile Include="JsonObjects\LearningInstancesList.cs" />
+    <Compile Include="JsonObjects\LearningInstanceStats.cs" />
     <Compile Include="JsonUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestUtils.cs" />

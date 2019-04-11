@@ -17,6 +17,43 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
         {
             this.broker = broker;
         }
+
+        // LI Stats
+        // http://localhost:81/IQBot/api/reporting/projects/c720a03e-fbbb-4dcb-9f49-471170fa04a1/totals
+        // http://localhost:81/IQBot/api/project-fields
+
+
+        // Output is CSV or JSON
+        public String GetLearningInstanceStatistics(Boolean RespInJsonFormat, String LearningInstanceID)
+        {
+            String Resp = "";
+            String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/reporting/projects/"+ LearningInstanceID + "/totals";
+            RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
+            JsonObjects.LearningInstanceStats.Response r = JsonConvert.DeserializeObject<JsonObjects.LearningInstanceStats.Response>(MyResp.RetResponse);
+            JsonObjects.LearningInstanceStats.Data LIData = r.data;
+
+            Resp = "Accuracy,TotalFilesProcessed,TotalSTP,TotalFilesUploaded,TotalFilesToValidation,TotalFilesValidated,TotalFilesUnprocessable,TotalStagingPageCount,TotalProdPageCount"+ "\n";
+            if (RespInJsonFormat) { Resp = MyResp.RetResponse; }
+            else
+            {
+                
+                int accuracy = LIData.totalAccuracy;
+                int totalFilesProcessed = LIData.totalFilesProcessed;
+                int totalSTP = LIData.totalSTP;
+                int totalFilesUploaded = LIData.totalFilesUploaded;
+                int totalFilesToValidation = LIData.totalFilesToValidation;
+                int totalFilesValidated = LIData.totalFilesValidated;
+                int totalFilesUnprocessable = LIData.totalFilesUnprocessable;
+                int totalStagingPageCount = LIData.totalStagingPageCount;
+                int totalProductionPageCount = LIData.totalProductionPageCount;
+                Resp = Resp + accuracy + "," + totalFilesProcessed + "," + totalSTP +"," + totalFilesUploaded + "," + totalFilesToValidation +
+                    "," + totalFilesValidated + "," + totalFilesUnprocessable + "," + totalStagingPageCount + "," + totalProductionPageCount + "\n";
+            }
+
+
+            return Resp;
+        }
+
         // Output is CSV or JSON
         public String GetAllLearningInstances(Boolean RespInJsonFormat)
         {
@@ -50,6 +87,7 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
             String LiName = "";
             foreach (var item in myList)
             {
+               
                 if(item.id == LiID)
                 {
                     Found = true;

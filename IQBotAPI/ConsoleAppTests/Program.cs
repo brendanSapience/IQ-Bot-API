@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using IQBotAPILibrary;
 using IQBotAPILibrary.CRCalls.Rest;
 using IQBotAPILibrary.IQBotCalls.Rest;
+using IQBot_Calls;
 
 namespace ConsoleAppTests
 {
@@ -17,10 +18,15 @@ namespace ConsoleAppTests
             Console.WriteLine("Initiating Broker.");
 
             String resp = "";
+
+            resp = _v650.GetLearningInstanceStatistics("http://localhost", 81, @"iqbot2", @"Un1ver$e",false, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
+            Console.WriteLine(resp);
+            Console.ReadKey();
+
             // initiate the broker
             //IQBotConnectionBroker broker = new IQBotConnectionBroker("localhost",1434,"aaadmin","Un1ver$e123");
-            IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6,"http://localhost",81, @"iqbot", @"Un1ver$e123",9996);
-
+            IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6,"http://localhost",81, @"iqbot2", @"Un1ver$e",9996);
+            //Console.ReadKey();
             //CRConnectionBroker crbroker = new CRConnectionBroker(11, "http://localhost", 8080, @"iqbot1", @"Un1ver$e123");
 
             //v11RestAPICalls apicallsCR = new v11RestAPICalls(crbroker);
@@ -32,10 +38,17 @@ namespace ConsoleAppTests
             _600ReadRestAPICalls apicallsRest = new _600ReadRestAPICalls(rbroker);
 
             // submit Rest api calls
-            //resp = apicallsRest.GetAllLearningInstances(false);
-            //resp = apicallsRest.GetLiNameFromLiID("2f22acc3-9e04-4fd4-9d61-6c4a3ded72e6",false);
-            //resp = apicallsRest.GetAllGroupsFromLIName("Test Instance - 1");
-            resp = apicallsRest.GetAllGroupsFromLIID("2f22acc3-9e04-4fd4-9d61-6c4a3ded72e6",false);
+            resp = apicallsRest.GetAllLearningInstances(false);
+            Console.WriteLine(resp);
+
+            resp = apicallsRest.GetLiNameFromLiID("969e6d85-744f-4aef-98da-c7c996e4f4f4", false);
+            Console.WriteLine("Name:"+resp);
+
+            resp = apicallsRest.GetAllGroupsFromLIName("_ Learning Instance for Invoices - 1",false);
+            Console.WriteLine(resp);
+
+            resp = apicallsRest.GetAllGroupsFromLIID("969e6d85-744f-4aef-98da-c7c996e4f4f4",false);
+            Console.WriteLine(resp);
 
             // submit READ api calls
 
@@ -55,7 +68,7 @@ namespace ConsoleAppTests
             //apicallsW.SetLearningInstanceName("01bc3faa-191f-4921-a3fc-5f71c60d723e", "Test123");
 
 
-            Console.WriteLine(resp);
+
 
             Console.ReadKey();
 

@@ -22,6 +22,7 @@ namespace IQBotAPILibrary
         public int RestAliasPort = 9996;
         public String RestAuthToken = "";
         //public int CRPort = 8080;
+        public AuthResponsev6 authres6;
 
         String SQLServerHostname = "";
         int SQLServerPort = 1433;
@@ -69,7 +70,11 @@ namespace IQBotAPILibrary
             switch (this.IQBotMajorVersion)
             {
                 case 6:
-                    ConnectionIsOK = testRestConnectionv6();
+                    authres6 = testRestConnectionv6();
+                    if(authres6 != null)
+                    {
+                        ConnectionIsOK = true;
+                    }
                     break;
                 default:
                     Console.WriteLine("-- Error, IQ Bot Version not supported: "+this.IQBotMajorVersion);
@@ -87,27 +92,7 @@ namespace IQBotAPILibrary
             IsRestConnectionOK = true;
         }
 
-        public Boolean testRestConnectionv5()
-        {
-            String URL = this.RestEndpointURL + ":" + this.RestAuthEndpointPort + "/api/authenticate";
-            string json = "{ \"username\" : \""+this.RestLogin+"\", \"password\" : \""+this.RestPassword+"\" }";
-
-            RestResponse resp = RestUtils.SendAuthRequest(URL, json,this.IQBotMajorVersion);
-            
-            AuthResponsev5 r = JsonConvert.DeserializeObject<AuthResponsev5>(resp.RetResponse);
-
-            if (!r.success)
-            {
-                Console.WriteLine(" -- Error: REST Authentication failed. Details: "+r.errors[0]);
-                return false;
-            }
-
-            this.RestAuthToken = r.data.token;
-            return true;
-
-        }
-
-        public Boolean testRestConnectionv6()
+        public AuthResponsev6 testRestConnectionv6()
         {
             String URL = this.RestEndpointURL + ":" + this.RestAuthEndpointPort + "/v1/authentication";
             
@@ -122,11 +107,11 @@ namespace IQBotAPILibrary
             if (r.token == null)
             {
                 Console.WriteLine(" -- Error: REST Authentication failed.");
-                return false;
+                return null;
             }
 
             this.RestAuthToken = r.token;
-            return true;
+            return r;
 
         }
 

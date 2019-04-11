@@ -106,6 +106,7 @@ namespace IQBotAPILibrary
             }
             catch (System.Net.WebException e)
             {
+                Console.WriteLine("Error: "+e.Message);
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 String Resp = GetResponseFromStream(httpResponse.GetResponseStream());
                 RestResponse rp = new RestResponse(httpResponse.StatusCode, Resp);
