@@ -15,9 +15,17 @@ namespace IQBotAPILibrary
     {
         public HttpStatusCode RetCode;
         public String RetResponse;
+        public int ORetCode;
+
         public RestResponse(HttpStatusCode rc, string resp)
         {
             this.RetCode = rc;
+            this.RetResponse = resp;
+        }
+
+        public RestResponse(int rc, string resp)
+        {
+            this.ORetCode = rc;
             this.RetResponse = resp;
         }
     }
@@ -54,23 +62,42 @@ namespace IQBotAPILibrary
                 streamWriter.Flush();
             }
 
+            System.Net.HttpWebResponse httpResponse;
+
             try
             {
                 
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 String Resp = GetResponseFromStream(httpResponse.GetResponseStream());
                 RestResponse rp = new RestResponse(httpResponse.StatusCode,Resp);
                 return rp;
 
             }
 
-            catch (System.Net.WebException e)
+            catch (System.Net.WebException ex)
             {
+                if (ex.Status == WebExceptionStatus.ProtocolError)
+                {
+                    var response = ex.Response as HttpWebResponse;
+                    if (response != null)
+                    {
+                        //Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
+                        RestResponse rp = new RestResponse((int)response.StatusCode, ex.Message);
+                        return rp;
+                    }
+                    else
+                    {
+                        return null;
+                        // no http status code available
+                    }
+                }
+                else
+                {
+                    return null;
+                    // no http status code available
+                }
 
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                String Resp = GetResponseFromStream(httpResponse.GetResponseStream());
-                RestResponse rp = new RestResponse(httpResponse.StatusCode, Resp);
-                return rp;
+               
             }
         }
 

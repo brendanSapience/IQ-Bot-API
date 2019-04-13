@@ -19,10 +19,33 @@ namespace ConsoleAppTests
 
             String resp = "";
 
-            resp = _v650.GetLearningInstanceStatistics("http://localhost", 81, @"iqbot2", @"Un1ver$e",false, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
-            Console.WriteLine(resp);
-            Console.ReadKey();
+            string Token = _v650._GetAuthorizationToken("http://localhost", 81, @"iqbot2", @"Un1ver$e", false);
+            Console.WriteLine("Token:" + Token);
+            
+            resp = _v650.GetLearningInstanceStatistics("http://localhost", 81, Token, true, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
+            
 
+            resp = _v650.GetLearningInstances("http://localhost", 81,Token, false);
+
+            resp = _v650.GetLearningInstanceNameFromID("http://localhost", 81, Token, false, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
+            Console.WriteLine(resp);
+
+            resp = _v650.GetLearningInstanceIDFromName("http://localhost", 81, Token, false, "_ Learning Instance for Invoices - ML");
+            Console.WriteLine(resp);
+
+            resp = _v650.GetGroupsFromLearningInstanceID("http://localhost", 81, Token, false, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
+            Console.WriteLine(resp);
+
+            resp = _v650.GetGroupsFromLearningInstanceName("http://localhost", 81, Token, false, "_ Learning Instance for Invoices - ML");
+            Console.WriteLine(resp);
+
+            resp = _v650.GetValidationQueueSummary("http://localhost", 81, Token, false, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
+            Console.WriteLine(resp);
+
+            resp = _v650.GetLearningInstanceValidationQueueCurrentCount("http://localhost", 81, Token, true, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
+            Console.WriteLine(resp);
+
+            Console.ReadKey();
             // initiate the broker
             //IQBotConnectionBroker broker = new IQBotConnectionBroker("localhost",1434,"aaadmin","Un1ver$e123");
             IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6,"http://localhost",81, @"iqbot2", @"Un1ver$e",9996);
@@ -37,18 +60,7 @@ namespace ConsoleAppTests
             //_530WriteDBAPICalls apicallsW = new IQBotAPILibrary._530WriteDBAPICalls(broker);
             _600ReadRestAPICalls apicallsRest = new _600ReadRestAPICalls(rbroker);
 
-            // submit Rest api calls
-            resp = apicallsRest.GetAllLearningInstances(false);
-            Console.WriteLine(resp);
 
-            resp = apicallsRest.GetLiNameFromLiID("969e6d85-744f-4aef-98da-c7c996e4f4f4", false);
-            Console.WriteLine("Name:"+resp);
-
-            resp = apicallsRest.GetAllGroupsFromLIName("_ Learning Instance for Invoices - 1",false);
-            Console.WriteLine(resp);
-
-            resp = apicallsRest.GetAllGroupsFromLIID("969e6d85-744f-4aef-98da-c7c996e4f4f4",false);
-            Console.WriteLine(resp);
 
             // submit READ api calls
 

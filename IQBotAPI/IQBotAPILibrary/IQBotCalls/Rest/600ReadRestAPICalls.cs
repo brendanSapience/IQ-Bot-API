@@ -22,7 +22,129 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
         // http://localhost:81/IQBot/api/reporting/projects/c720a03e-fbbb-4dcb-9f49-471170fa04a1/totals
         // http://localhost:81/IQBot/api/project-fields
 
+        //http://localhost:81/IQBot/api/projects/969e6d85-744f-4aef-98da-c7c996e4f4f4/detail-summary
 
+        public String GetLearningInstanceValidationQueueCurrentCount(Boolean RespInJsonFormat, String LearningInstanceID)
+        {
+            String Resp = "";
+            String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/projects/" + LearningInstanceID + "/detail-summary";
+            RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
+            //Console.WriteLine("DEBUG :"+MyResp.RetResponse);
+            JsonObjects.LearningInstanceDetails.Response r = JsonConvert.DeserializeObject<JsonObjects.LearningInstanceDetails.Response>(MyResp.RetResponse);
+            JsonObjects.LearningInstanceDetails.Data LIData = r.data;
+
+           // Resp = "InValidationQueue,ProdValidatedFiles" + "\n";
+            if (RespInJsonFormat) {
+                Resp = "{\"count\":"+ LIData.pendingForReview+"}";
+            }
+            else
+            {
+
+                int InValidationQueue = LIData.pendingForReview;
+                //int ProdValidatedFiles = LIData.productionReviewFiles;
+
+
+
+                Resp = Resp + InValidationQueue;
+            }
+
+
+            return Resp;
+        }
+
+        public String GetLearningInstanceValidationSummary(Boolean RespInJsonFormat, String LearningInstanceID)
+        {
+            String Resp = "";
+            String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/projects/" + LearningInstanceID + "/detail-summary";
+            RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
+            //Console.WriteLine("DEBUG :"+MyResp.RetResponse);
+            JsonObjects.LearningInstanceDetails.Response r = JsonConvert.DeserializeObject<JsonObjects.LearningInstanceDetails.Response>(MyResp.RetResponse);
+            JsonObjects.LearningInstanceDetails.Data LIData = r.data;
+
+            Resp = "InValidationQueue,ProdValidatedFiles" + "\n";
+            if (RespInJsonFormat) { Resp = MyResp.RetResponse; }
+            else
+            {
+
+                int InValidationQueue = LIData.pendingForReview;
+                int ProdValidatedFiles = LIData.productionReviewFiles;
+                
+
+
+                Resp = Resp + InValidationQueue + "," + ProdValidatedFiles + "\n";
+            }
+
+
+            return Resp;
+        }
+
+        public String GetLearningInstanceDetailsPROD(Boolean RespInJsonFormat, String LearningInstanceID)
+        {
+            String Resp = "";
+            String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/projects/" + LearningInstanceID + "/detail-summary";
+            RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
+            JsonObjects.LearningInstanceDetails.Response r = JsonConvert.DeserializeObject<JsonObjects.LearningInstanceDetails.Response>(MyResp.RetResponse);
+            JsonObjects.LearningInstanceDetails.Data LIData = r.data;
+
+            Resp = "ProdPageCount,ProdProcessedFiles,ProdProcessedFilesPercentage,ProdAccuracy,ProdUnclassified," +
+                "ProdSTP,ProdSuccessFiles,ProdTotalBots,ProdTotalFiles,ProdTotalGroups,ProdInvalid" + "\n";
+            if (RespInJsonFormat) { Resp = MyResp.RetResponse; }
+            else
+            {
+
+                int ProdPageCount = LIData.productionPageCount;
+                int ProdProcessedFiles = LIData.productionProcessedFiles;
+                int ProdProcessedFilesPercentage = LIData.productionProcessedFilesPercentage;
+                int ProdAccuracy = LIData.productionAccuracy;
+                int ProdUnclassified = LIData.productionDocumentsUnclassified;
+                int ProdSTP = LIData.productionSTP;
+                int ProdSuccessFiles = LIData.productionSuccessFiles;
+                int ProdTotalBots = LIData.productionTotalBots;
+                int ProdTotalFiles = LIData.productionTotalFiles;
+                int ProdTotalGroups = LIData.productionTotalGroups;
+                int ProdInvalid = LIData.productionInvalidFiles;
+
+                Resp = Resp + ProdPageCount + "," + ProdProcessedFiles + "," + ProdProcessedFilesPercentage + "," + ProdAccuracy + "," + ProdUnclassified +
+                    "," + ProdSTP + "," + ProdSuccessFiles + "," + ProdTotalBots + "," + ProdTotalFiles + "," + ProdTotalGroups + "," + ProdInvalid + "\n";
+            }
+
+
+            return Resp;
+        }
+
+        public String GetLearningInstanceDetailsSTAGING(Boolean RespInJsonFormat, String LearningInstanceID)
+        {
+            String Resp = "";
+            String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/projects/" + LearningInstanceID + "/detail-summary";
+            RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
+            JsonObjects.LearningInstanceDetails.Response r = JsonConvert.DeserializeObject<JsonObjects.LearningInstanceDetails.Response>(MyResp.RetResponse);
+            JsonObjects.LearningInstanceDetails.Data LIData = r.data;
+
+            Resp = "StagingPageCount,StagingTestedFiles,StagingTestFilesPercentage,StagingAccuracy,StagingUnclassified," +
+                "StagingSTP,StagingSucessFiles,StagingTotalBots,StagingTotalFiles,StagingTotalGroups,StagingFailed" + "\n";
+            if (RespInJsonFormat) { Resp = MyResp.RetResponse; }
+            else
+            {
+
+                int StagingPageCount = LIData.stagingPageCount;
+                int StagingTestedFiles = LIData.stagingTestedFiles;
+                int StagingTestFilesPercentage = LIData.stagingTestedFilesPercentage;
+                int StagingAccuracy = LIData.stagingAccuracy;
+                int StagingUnclassified = LIData.stagingDocumentsUnclassified;
+                int StagingSTP = LIData.stagingSTP;
+                int StagingSucessFiles = LIData.stagingSuccessFiles;
+                int StagingTotalBots = LIData.stagingTotalBots;
+                int StagingTotalFiles = LIData.stagingTotalFiles;
+                int StagingTotalGroups = LIData.stagingTotalGroups;
+                int StagingFailed = LIData.stagingFailedFiles;
+
+                Resp = Resp + StagingPageCount + "," + StagingTestedFiles + "," + StagingTestFilesPercentage + "," + StagingAccuracy + "," + StagingUnclassified +
+                    "," + StagingSTP + "," + StagingSucessFiles + "," + StagingTotalBots + "," + StagingTotalFiles + "," + StagingTotalGroups + "," + StagingFailed + "\n";
+            }
+
+
+            return Resp;
+        }
         // Output is CSV or JSON
         public String GetLearningInstanceStatistics(Boolean RespInJsonFormat, String LearningInstanceID)
         {
@@ -62,7 +184,8 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
             RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken,this.broker.IQBotMajorVersion);
             JsonObjects.LearningInstancesList.Response r = JsonConvert.DeserializeObject<JsonObjects.LearningInstancesList.Response>(MyResp.RetResponse);
             List< JsonObjects.LearningInstancesList.Datum> myList = r.data;
-            
+
+            Resp = "LearingInstanceID,LearningInstanceName" + "\n";
 
             if (RespInJsonFormat) { Resp = MyResp.RetResponse;}
             else
@@ -77,7 +200,7 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
             return Resp;
         }
 
-        public String GetLiNameFromLiID(String LiID, Boolean RespInJsonFormat)
+        public String GetLiNameFromLiID(Boolean RespInJsonFormat,String LiID)
         {
             String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/projects";
             RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
@@ -111,7 +234,7 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
             
         }
 
-        public String GetLiIDFromLiName(String LiName, Boolean RespInJsonFormat)
+        public String GetLiIDFromLiName(Boolean RespInJsonFormat,String LiName)
         {
             String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/projects";
             RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
@@ -144,11 +267,14 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
             
         }
 
-        public String GetAllGroupsFromLIID(String LIID, Boolean RespInJsonFormat)
+        public String GetAllGroupsFromLIID(Boolean RespInJsonFormat, String LIID)
         {
             String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/projects/"+LIID+"/categories?offset=0&limit=500&sort=-index";
             RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
             String RESPONSE = "";
+
+            RESPONSE = "GroupId,GroupName,GroupInternalId,GroupState,GroupIsRunning,GroupLastModifiedByUser,GroupLastModifiedTimeStamp,GroupFileCount" + "\n";
+
 
             if (RespInJsonFormat) { RESPONSE = MyResp.RetResponse; }
             else
@@ -184,20 +310,20 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
                     AllRows = AllRows + OneRow + "\n";
                     //Console.WriteLine(item.name + ":" + item.id);
                 }
-                RESPONSE = AllRows;
+                RESPONSE =RESPONSE+ AllRows;
             }
             
             return RESPONSE;
         }
 
-        public String GetAllGroupsFromLIName(String LiName, Boolean RespInJsonFormat)
+        public String GetAllGroupsFromLIName(Boolean RespInJsonFormat,String LiName)
         {
-            String s = GetLiIDFromLiName(LiName,false);
+            String s = GetLiIDFromLiName(false,LiName);
             if (s == "")
             {
                 return "";
             }
-            return GetAllGroupsFromLIID(s,RespInJsonFormat);
+            return GetAllGroupsFromLIID(RespInJsonFormat,s);
         }
     }
 }

@@ -55,6 +55,17 @@ namespace IQBotAPILibrary
             IsSqlConnectionOK = true;
         }
 
+
+        public IQBotConnectionBroker(int MajorVersion, String RestBaseURI, int RestAuthPort, String Token, int AliasServicePort)
+        {
+            this.RestEndpointURL = RestBaseURI;
+            this.RestAuthEndpointPort = RestAuthPort;
+            this.RestAuthToken = Token;
+            this.RestAliasPort = AliasServicePort;
+            this.IQBotMajorVersion = MajorVersion;
+            
+        }
+
         public IQBotConnectionBroker(int MajorVersion, String RestBaseURI, int RestAuthPort, String Login, String Password,int AliasServicePort)
         {
             this.RestEndpointURL = RestBaseURI;
@@ -99,19 +110,28 @@ namespace IQBotAPILibrary
             string json = "{ \"username\" : \"" + this.RestLogin + "\", \"password\" : \"" + this.RestPassword + "\" }";
             //Console.WriteLine("Debug:" + URL+":"+json);
             RestResponse resp = RestUtils.SendAuthRequest(URL, json, this.IQBotMajorVersion);
-            //Console.WriteLine("Debug:" + resp.RetResponse);
-           
-            //AuthResponsev6_401
-            AuthResponsev6 r = JsonConvert.DeserializeObject<AuthResponsev6>(resp.RetResponse);
-
-            if (r.token == null)
-            {
-                Console.WriteLine(" -- Error: REST Authentication failed.");
+            
+            if(resp.ORetCode != 0){
+                Console.WriteLine(" -- Error Code: " + resp.ORetCode);
                 return null;
             }
+            else
+            {
+                //AuthResponsev6_401
+                AuthResponsev6 r = JsonConvert.DeserializeObject<AuthResponsev6>(resp.RetResponse);
 
-            this.RestAuthToken = r.token;
-            return r;
+                if (r.token == null)
+                {
+                    Console.WriteLine(" -- Error: REST Authentication failed.");
+                    this.RestAuthToken = null;
+                    return null;
+                }
+
+                this.RestAuthToken = r.token;
+                return r;
+            }
+
+
 
         }
 
