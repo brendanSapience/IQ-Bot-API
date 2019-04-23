@@ -22,8 +22,9 @@ namespace ConsoleAppTests
             string Token = _v650._GetAuthorizationToken("http://localhost", 81, @"iqbot2", @"Un1ver$e", false);
             Console.WriteLine("Token:" + Token);
             
-            resp = _v650.GetLearningInstanceStatistics("http://localhost", 81, Token, true, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
-            
+            resp = _v650.GetLearningInstanceStatistics("http://localhost", 81, Token, false, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
+            Console.WriteLine(resp);
+            Console.ReadKey();
 
             resp = _v650.GetLearningInstances("http://localhost", 81,Token, false);
 
