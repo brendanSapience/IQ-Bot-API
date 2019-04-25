@@ -59,6 +59,7 @@
     <Compile Include="JsonObjects\GroupsList.cs" />
     <Compile Include="JsonObjects\LearningInstanceDetails.cs" />
     <Compile Include="JsonObjects\LearningInstancesList.cs" />
+    <Compile Include="JsonObjects\LearningInstanceFilesList.cs" />
     <Compile Include="JsonObjects\LearningInstanceStats.cs" />
     <Compile Include="JsonUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

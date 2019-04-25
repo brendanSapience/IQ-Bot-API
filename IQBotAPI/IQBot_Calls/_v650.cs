@@ -31,6 +31,14 @@ namespace IQBot_Calls
             return resp;
         }
 
+        public static String GetLearningInstanceFileList(String CRUrl, int CRPort, String AuthToken, Boolean JsonResponse, String LearningInstanceId)
+        {
+            IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6, CRUrl, CRPort, AuthToken, ALIASPORT);
+            _600ReadRestAPICalls apicallsRest = new _600ReadRestAPICalls(rbroker);
+            String resp = apicallsRest.GetFileListFromLearningInstance(JsonResponse, LearningInstanceId);
+            return resp;
+        }
+
         public static String GetLearningInstanceValidationQueueCurrentCount(String CRUrl, int CRPort, String AuthToken, Boolean JsonResponse, String LearningInstanceId)
         {
             IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6, CRUrl, CRPort, AuthToken, ALIASPORT);

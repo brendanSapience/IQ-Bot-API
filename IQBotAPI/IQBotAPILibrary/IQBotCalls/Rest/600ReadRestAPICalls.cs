@@ -52,6 +52,29 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
             return Resp;
         }
 
+        public String GetFileListFromLearningInstance(Boolean RespInJsonFormat, String LearningInstanceID)
+        {
+            String Resp = "";
+            String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/projects/" + LearningInstanceID + "/files";
+            RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
+            //Console.WriteLine("DEBUG :"+MyResp.RetResponse);
+            JsonObjects.LearningInstanceFilesList.Response r = JsonConvert.DeserializeObject<JsonObjects.LearningInstanceFilesList.Response>(MyResp.RetResponse);
+            List<JsonObjects.LearningInstanceFilesList.Datum> LIData = r.data;
+
+            Resp = "FileID,FileName,GroupID,IsProduction,FileSize,IsProcessed,Format" + "\n";
+            if (RespInJsonFormat) { Resp = MyResp.RetResponse; }
+            else
+            {
+                foreach (var item in LIData)
+                {
+                    Resp = Resp + item.fileId + "," + item.fileName + "," + item.classificationId + "," + item.isProduction + "," + item.fileSize + "," + item.processed + "," + item.format + "\n";
+                }
+            }
+
+
+            return Resp;
+        }
+
         public String GetLearningInstanceValidationSummary(Boolean RespInJsonFormat, String LearningInstanceID)
         {
             String Resp = "";
