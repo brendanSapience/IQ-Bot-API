@@ -44,8 +44,8 @@ Rest Based Methods:
 * Generate Authentication Token (returns a valid authentication token to use in all other calls)
 * Get Learning Instance ID From Name (returns the internal ID of a LI)
 * Get Learning Instance Statistics (returns the statistics of an LI based on its internal ID)
-* Get Validation Queue Count (returns the current number of files in the validation queue of an LI)
-
+* Get Validation Queue Count (returns the current number of files in the validation queue of a LI)
+* Get List of Files in Learning Instance (returns the list of files associated / processed in a LI)
 
 ### Formats
 
