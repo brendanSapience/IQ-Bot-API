@@ -23,6 +23,95 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
         // http://localhost:81/IQBot/api/project-fields
 
         //http://localhost:81/IQBot/api/projects/969e6d85-744f-4aef-98da-c7c996e4f4f4/detail-summary
+        ///IQBot/api/projects/388965b7-2e35-4b1d-a35b-17c8f00e0320/categories/8/bots/Edit
+        ///
+
+        public String GetGroupLayout(Boolean RespInJsonFormat, String LearningInstanceID, int GroupNumber, Boolean ShowAllFields)
+        {
+            String Resp = "";
+            String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/projects/" + LearningInstanceID + "/categories/"+GroupNumber+"/bots/Edit";
+            RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
+            //Console.WriteLine("DEBUG :"+MyResp.RetResponse);
+            JsonObjects.GroupDefinition.Response r = JsonConvert.DeserializeObject<JsonObjects.GroupDefinition.Response>(MyResp.RetResponse);
+            List<JsonObjects.GroupDefinition.Field3> GrpData = r.visionBotData.DataModel.Fields; // contains the mapping between Field ID and Field Name
+            List<JsonObjects.GroupDefinition.Field2> allFields = r.visionBotData.Layouts[0].Fields; // contains the coordinates of each field
+
+            // the following 3 objects contain all SIR Data
+            List<JsonObjects.GroupDefinition.Line> SirFields = r.visionBotData.Layouts[0].SirFields.Lines; // Definition of SIR Boxes (coordinates)
+            List<JsonObjects.GroupDefinition.Region> SirRegions = r.visionBotData.Layouts[0].SirFields.Regions; // Each SIR Region in detail
+            List<JsonObjects.GroupDefinition.Field> SirFields2 = r.visionBotData.Layouts[0].SirFields.Fields;   // Each SIR Field
+
+            IDictionary<string, string> FieldIdFieldNameDict = new Dictionary<string, string>();
+            
+            foreach(JsonObjects.GroupDefinition.Field3 item in GrpData)
+            {
+                FieldIdFieldNameDict.Add(item.Id, item.Name);
+            }
+
+            //Console.WriteLine("DEBUGDict Size:" + FieldIdFieldNameDict.Count);
+            // foreach(var g in FieldIdFieldNameDict)
+            // {
+            //     Console.WriteLine("DEBUG:" + g.Key+"|"+g.Value);
+            // }
+            if (!ShowAllFields)
+            {
+                Resp = "FieldName,Label,ValueBounds,Bounds" + "\n";
+            }
+            else
+            {
+                Resp = "FieldName,FieldId,Label,StartsWith,EndsWith,FormatExpression,DisplayValue,IsMultiline,Bounds,ValueBounds,FieldDirection,MergeRatio,SimilarityFactor," +
+                    "FieldType,IsValueAutoBound,ValueType,IsDollarCurrency" + "\n";
+            }
+            
+
+            if (RespInJsonFormat) { Resp = MyResp.RetResponse; }
+            else
+            {
+                foreach (JsonObjects.GroupDefinition.Field2 field in allFields)
+                {
+                   // Console.WriteLine("Loking for:" + field.FieldId);
+                    String FieldName = FieldIdFieldNameDict[field.FieldId];
+                    String FieldID = field.Id;
+                    String FieldLabel = field.Label;
+                    String StartsWith = field.StartsWith;
+                    String EndsWith = field.EndsWith;
+                    String FormatExpression = field.FormatExpression;
+                    String FieldDisplayValue = field.DisplayValue;
+                    Boolean IsMultiline = field.IsMultiline;
+                    String FieldBounds = field.Bounds;
+                    String FieldValueBounds = field.ValueBounds; 
+                    int FieldDirection = field.FieldDirection;
+                    int MergeRatio = field.MergeRatio;
+                    double SimilarityFactor = field.SimilarityFactor;
+                    int FieldType = field.Type;
+                    Boolean IsValueBoundAuto = field.IsValueBoundAuto;
+                    int ValueType = field.ValueType;
+                    String IsDollarCurrency = field.IsDollarCurrency;
+
+                    if (!ShowAllFields)
+                    {
+                        Resp = Resp + FieldName + ","+ FieldLabel + ",\"" + FieldValueBounds + "\",\"" + FieldBounds + "\"\n";
+                    }
+                    else
+                    {
+                        Resp = Resp + FieldName + "," + FieldID + "," + FieldLabel + "," + StartsWith + "," + EndsWith +
+                            FormatExpression + "," + FieldDisplayValue + "," + IsMultiline + ",\"" + FieldValueBounds + "\",\"" + FieldValueBounds + "\","+
+                            FieldDirection + "," + MergeRatio + "," + SimilarityFactor + "," + FieldType + "," + IsValueBoundAuto +
+                            ValueType + "," + IsDollarCurrency +
+                            "\n";
+                    }
+                    
+                }
+
+                
+            }
+
+
+            return Resp;
+
+
+            return Resp;
+        }
 
         public String GetLearningInstanceValidationQueueCurrentCount(Boolean RespInJsonFormat, String LearningInstanceID)
         {
