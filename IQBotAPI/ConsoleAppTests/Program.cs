@@ -30,6 +30,14 @@ namespace ConsoleAppTests
             Console.WriteLine(resp);
             Console.ReadKey();
 
+            resp = _v650.GetFieldAccuracyStatistics("http://localhost", 81, Token, false, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
+            Console.WriteLine(resp);
+            Console.ReadKey();
+
+            resp = _v650.GetFieldClassificationStatistics("http://localhost", 81, Token, false, "969e6d85-744f-4aef-98da-c7c996e4f4f4");
+            Console.WriteLine(resp);
+            Console.ReadKey();
+
             resp = _v650.GetLearningInstances("http://localhost", 81,Token, false);
 
             resp = _v650.GetLearningInstanceNameFromID("http://localhost", 81, Token, false, "969e6d85-744f-4aef-98da-c7c996e4f4f4");

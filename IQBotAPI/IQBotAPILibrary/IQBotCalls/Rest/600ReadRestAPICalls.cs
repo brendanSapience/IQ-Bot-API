@@ -177,7 +177,7 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
             JsonObjects.LearningInstanceStats.Response r = JsonConvert.DeserializeObject<JsonObjects.LearningInstanceStats.Response>(MyResp.RetResponse);
             JsonObjects.LearningInstanceStats.Data LIData = r.data;
 
-            Resp = "Accuracy,TotalFilesProcessed,TotalSTP,TotalFilesUploaded,TotalFilesToValidation,TotalFilesValidated,TotalFilesUnprocessable,TotalStagingPageCount,TotalProdPageCount"+ "\n";
+            Resp ="Accuracy,TotalFilesProcessed,TotalSTP,TotalFilesUploaded,TotalFilesToValidation,TotalFilesValidated,TotalFilesUnprocessable,TotalStagingPageCount,TotalProdPageCount"+ "\n";
             if (RespInJsonFormat) { Resp = MyResp.RetResponse; }
             else
             {
@@ -196,6 +196,60 @@ namespace IQBotAPILibrary.IQBotCalls.Rest
             }
 
 
+            return Resp;
+        }
+
+        // Output is CSV or JSON
+        public String GetLearningInstanceFieldAccuracyStatistics(Boolean RespInJsonFormat, String LearningInstanceID)
+        {
+            String Resp = "";
+            String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/reporting/projects/" + LearningInstanceID + "/totals";
+            RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
+            JsonObjects.LearningInstanceStats.Response r = JsonConvert.DeserializeObject<JsonObjects.LearningInstanceStats.Response>(MyResp.RetResponse);
+            JsonObjects.LearningInstanceStats.Data LIData = r.data;
+
+            Resp ="FieldName,FieldAccuracyPercent"+ "\n";
+            if (RespInJsonFormat) { Resp = MyResp.RetResponse; }
+            else
+            {
+                List<JsonObjects.LearningInstanceStats.FieldRepresentation> FieldRep = LIData.classification.fieldRepresentation;
+                List<JsonObjects.LearningInstanceStats.Field> FieldAccuracy = LIData.accuracy.fields;
+
+                foreach(JsonObjects.LearningInstanceStats.Field f in FieldAccuracy)
+                {
+                    String fName = f.name;
+                    int fAccuracy = f.accuracyPercent;
+                   
+                    Resp = Resp + fName + "," + fAccuracy + "\n";
+                }
+            }
+            return Resp;
+        }
+
+        // Output is CSV or JSON
+        public String GetLearningInstanceFieldlCassificationStatistics(Boolean RespInJsonFormat, String LearningInstanceID)
+        {
+            String Resp = "";
+            String Req = this.broker.RestEndpointURL + ":" + this.broker.RestAuthEndpointPort + "/IQBot/api/reporting/projects/" + LearningInstanceID + "/totals";
+            RestResponse MyResp = RestUtils.SendGetRequest(Req, this.broker.RestAuthToken, this.broker.IQBotMajorVersion);
+            JsonObjects.LearningInstanceStats.Response r = JsonConvert.DeserializeObject<JsonObjects.LearningInstanceStats.Response>(MyResp.RetResponse);
+            JsonObjects.LearningInstanceStats.Data LIData = r.data;
+
+            Resp ="FieldName,RepresentationPercent" + "\n";
+            if (RespInJsonFormat) { Resp = MyResp.RetResponse; }
+            else
+            {
+                List<JsonObjects.LearningInstanceStats.FieldRepresentation> FieldRep = LIData.classification.fieldRepresentation;
+                //List<JsonObjects.LearningInstanceStats.Field> FieldAccuracy = LIData.accuracy.fields;
+
+                foreach (JsonObjects.LearningInstanceStats.FieldRepresentation f in FieldRep)
+                {
+                    String fName = f.name;
+                    int fRepPercent = f.representationPercent;
+
+                    Resp = Resp + fName + "," + fRepPercent + "\n";
+                }
+            }
             return Resp;
         }
 

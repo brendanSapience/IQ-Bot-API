@@ -95,6 +95,22 @@ namespace IQBot_Calls
             return resp;
         }
 
+        public static String GetFieldAccuracyStatistics(String CRUrl, int CRPort, String AuthToken, Boolean JsonResponse, String LearningInstanceId)
+        {
+            IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6, CRUrl, CRPort, AuthToken, ALIASPORT);
+            _600ReadRestAPICalls apicallsRest = new _600ReadRestAPICalls(rbroker);
+            String resp = apicallsRest.GetLearningInstanceFieldAccuracyStatistics(JsonResponse, LearningInstanceId);
+            return resp;
+        }
+
+        public static String GetFieldClassificationStatistics(String CRUrl, int CRPort, String AuthToken, Boolean JsonResponse, String LearningInstanceId)
+        {
+            IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6, CRUrl, CRPort, AuthToken, ALIASPORT);
+            _600ReadRestAPICalls apicallsRest = new _600ReadRestAPICalls(rbroker);
+            String resp = apicallsRest.GetLearningInstanceFieldlCassificationStatistics(JsonResponse, LearningInstanceId);
+            return resp;
+        }
+
         public static String GetLearningInstanceIDFromName(String CRUrl, int CRPort, String AuthToken, Boolean JsonResponse, String LearningInstanceName)
         {
             IQBotConnectionBroker rbroker = new IQBotConnectionBroker(6, CRUrl, CRPort, AuthToken, ALIASPORT);
