@@ -48,6 +48,8 @@ Rest Based Methods:
 * Get List of Files in Learning Instance (returns the list of files associated / processed in a LI)
 * Get Field Accuracy Statistics for Learning Instance
 * Get Field Classification Statistics for Learning Instance
+* Get Group Definition (List of all Fields and associated Bounds)
+
 
 ### Formats
 
