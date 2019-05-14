@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTests", "ConsoleA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQBot_Calls", "IQBot_Calls\IQBot_Calls.csproj", "{48D24603-8D19-49EE-B7FD-541981341F64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doctools_Calls", "Doctools_Calls\Doctools_Calls.csproj", "{53F0DC1E-9887-4F0C-A53B-6D5698B05BBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{48D24603-8D19-49EE-B7FD-541981341F64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48D24603-8D19-49EE-B7FD-541981341F64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48D24603-8D19-49EE-B7FD-541981341F64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53F0DC1E-9887-4F0C-A53B-6D5698B05BBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53F0DC1E-9887-4F0C-A53B-6D5698B05BBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53F0DC1E-9887-4F0C-A53B-6D5698B05BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53F0DC1E-9887-4F0C-A53B-6D5698B05BBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

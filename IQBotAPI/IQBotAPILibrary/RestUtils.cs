@@ -100,6 +100,7 @@ namespace IQBotAPILibrary
                
             }
         }
+        
 
         public static RestResponse SendGetRequest(String URL,String AuthToken,int MajorVersion)
         {
@@ -134,6 +135,35 @@ namespace IQBotAPILibrary
             catch (System.Net.WebException e)
             {
                 Console.WriteLine("Error: "+e.Message);
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                String Resp = GetResponseFromStream(httpResponse.GetResponseStream());
+                RestResponse rp = new RestResponse(httpResponse.StatusCode, Resp);
+                return rp;
+            }
+        }
+
+
+        public static RestResponse SendPostRequestDT(String URL)
+        {
+
+            System.Net.HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(URL);
+            httpWebRequest.ContentType = "application/json";
+            //httpWebRequest.Headers["x-auth-token"] = AuthToken;
+            
+            httpWebRequest.Method = "POST";
+
+            try
+            {
+
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                String Resp = GetResponseFromStream(httpResponse.GetResponseStream());
+                RestResponse rp = new RestResponse(httpResponse.StatusCode, Resp);
+                return rp;
+
+            }
+            catch (System.Net.WebException e)
+            {
+                Console.WriteLine("Error: " + e.Message);
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 String Resp = GetResponseFromStream(httpResponse.GetResponseStream());
                 RestResponse rp = new RestResponse(httpResponse.StatusCode, Resp);

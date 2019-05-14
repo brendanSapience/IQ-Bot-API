@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Doctools_Calls\Doctools_Calls.csproj">
+      <Project>{53F0DC1E-9887-4F0C-A53B-6D5698B05BBD}</Project>
+      <Name>Doctools_Calls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IQBotAPILibrary\IQBotAPILibrary.csproj">
       <Project>{bb4eca82-a274-4121-8ee8-1dacca4cb8b7}</Project>
       <Name>IQBotAPILibrary</Name>
