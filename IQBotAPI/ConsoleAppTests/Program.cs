@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using IQBotAPILibrary;
 using IQBotAPILibrary.CRCalls.Rest;
 using IQBotAPILibrary.IQBotCalls.Rest;
+using IQBotAPILibrary.DoctoolsCalls;
 using IQBot_Calls;
+using Doctools_Calls;
 
 namespace ConsoleAppTests
 {
@@ -18,6 +20,22 @@ namespace ConsoleAppTests
             Console.WriteLine("Initiating Broker.");
 
             String resp = "";
+
+            resp = _v100.SplitPdfsWithBlankPages("http://localhost", 11051,@"C:\Users\Administrator\Desktop\customers\CareFirst\Sample_Invoice_Combined_BlankPages.pdf","English");
+            Console.WriteLine("DEBUG Resp:" + resp);
+            Console.ReadKey();
+
+            resp = _v100.SplitPdf("http://localhost", 11051, @"C:\Users\Administrator\Desktop\customers\CareFirst\Sample_Invoice_Combined_BlankPages.pdf", "1-2");
+            Console.WriteLine("DEBUG Resp:" + resp);
+            Console.ReadKey();
+
+            resp = _v100.MRPdfToText("http://localhost", 11051, @"C:\Users\Administrator\Desktop\Doctools\input-01_ML.pdf", "2");
+            Console.WriteLine("DEBUG Resp:" + resp);
+            Console.ReadKey();
+
+            resp = _v100.OCRPdf("http://localhost", 11051, @"C:\Users\Administrator\Desktop\Doctools\input-01.pdf","english");
+            Console.WriteLine("DEBUG Resp:"+resp);
+            Console.ReadKey();
 
             string Token = _v650._GetAuthorizationToken("http://localhost", 81, @"iqbot2", @"Un1ver$e", false);
             Console.WriteLine("Token:" + Token);
