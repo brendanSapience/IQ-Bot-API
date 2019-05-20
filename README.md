@@ -58,7 +58,7 @@ Doctools installed and started
 
 
 * Split PDF Document per blank page
-
+* Split PDF Document per blank page v2 (with option to change output folder for generated pdfs and automatically delete temp files)
 
 
 ## Authors
