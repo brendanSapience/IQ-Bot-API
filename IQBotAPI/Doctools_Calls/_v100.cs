@@ -14,18 +14,18 @@ namespace Doctools_Calls
 {
     public class _v100
     {
-
-        public static String SplitPdf(String DTUrl, int DTPort, String InputFilePath, String Range)
+        // Split a PDF based on a range
+        public static String SplitPdf(String DTUrl, int DTPort, String InputFilePath, String Range, String OutputFolder)
         {
             DoctoolsConnectionBroker rbroker = new DoctoolsConnectionBroker(DTUrl, DTPort);
             _100DTRestCalls apicallsRest = new _100DTRestCalls(rbroker);
-            HttpWebResponse Resp = apicallsRest.SplitPdf(InputFilePath, InputFilePath, Range);
+            HttpWebResponse Resp = apicallsRest.SplitPdf(InputFilePath, OutputFolder, Range);
             HttpStatusCode code = Resp.StatusCode;
             return code.ToString();
-            //return "";
+            
         }
 
-
+        // Generate a Machine Readable PDF from a Non MR Pdf File
         public static String OCRPdf(String DTUrl, int DTPort, String InputFilePath, String OutputFilePath, String Language)
         {
             DoctoolsConnectionBroker rbroker = new DoctoolsConnectionBroker(DTUrl, DTPort);
@@ -33,9 +33,10 @@ namespace Doctools_Calls
             HttpWebResponse Resp = apicallsRest.ConvertPDFToMachineReadable(InputFilePath, OutputFilePath, Language);
             HttpStatusCode code = Resp.StatusCode;
             return code.ToString();
-            //return "";
+            
         }
 
+        // Generate a Machine Readable PDF from a Non MR Pdf File
         public static String OCRPdf(String DTUrl, int DTPort, String InputFilePath, String Language)
         {
             DoctoolsConnectionBroker rbroker = new DoctoolsConnectionBroker(DTUrl, DTPort);
@@ -43,9 +44,9 @@ namespace Doctools_Calls
             HttpWebResponse Resp = apicallsRest.ConvertPDFToMachineReadable(InputFilePath, InputFilePath, Language);
             HttpStatusCode code = Resp.StatusCode;
             return code.ToString();
-            //return "";
         }
 
+        // Returns a JSON response containing the content of the OCR'ed file and location information for each field extracted
         public static String MRPdfToText(String DTUrl, int DTPort, String InputFilePath, String Depth)
         {
             DoctoolsConnectionBroker rbroker = new DoctoolsConnectionBroker(DTUrl, DTPort);
@@ -57,23 +58,35 @@ namespace Doctools_Calls
                 StreamReader reader = new StreamReader(stream, Encoding.UTF8);
                 responseString = reader.ReadToEnd();
             }
-
-            //IQBotAPILibrary.JsonObjects.Doctools.PDFToText.Response r = JsonConvert.DeserializeObject<IQBotAPILibrary.JsonObjects.Doctools.PDFToText.Response>(responseString);
-
             HttpStatusCode code = Resp.StatusCode;
             return responseString;
-            //return "";
         }
 
         public static String SplitPdfsWithBlankPages(String DTUrl, int DTPort, String InputFilePath, String Language)
         {
+            return SplitPdfsWithBlankPages(DTUrl, DTPort, InputFilePath, Language, "", false);
+        }
+        // Split a PDF into multiple PDFs (on blank pages)
+        public static String SplitPdfsWithBlankPages(String DTUrl, int DTPort, String InputFilePath, String Language, String OutputFolder, Boolean DeleteTempFiles)
+        {
+            String DEPTH = "2";
+            // TO DO: add option to remove temp MR file
+            // TODO: add option to automatically generate files in another folder
+
             String Output = "";
             DoctoolsConnectionBroker rbroker = new DoctoolsConnectionBroker(DTUrl, DTPort);
             _100DTRestCalls apicallsRest = new _100DTRestCalls(rbroker);
 
-            String RootPath = Path.GetDirectoryName(InputFilePath) + "\\";
+            String OutputRootPath = Path.GetDirectoryName(InputFilePath) + "\\";
 
-            String TempMRFile = RootPath + Path.GetFileNameWithoutExtension(InputFilePath) + "_MR" + Path.GetExtension(InputFilePath);
+            String TempMRFile = "";
+
+            if (OutputFolder != null && OutputFolder != "")
+            {
+                OutputRootPath = OutputFolder;
+            }
+       
+            TempMRFile = OutputRootPath + Path.GetFileNameWithoutExtension(InputFilePath) + "_MR" + Path.GetExtension(InputFilePath);
 
             Output = Output + "Machine Readable Filename: " + TempMRFile + "\n";
             HttpWebResponse Resp = apicallsRest.ConvertPDFToMachineReadable(InputFilePath, TempMRFile, Language);
@@ -83,7 +96,7 @@ namespace Doctools_Calls
 
             // TO DO check for response status
 
-            HttpWebResponse Resp1 = apicallsRest.GetTextInMachineReadablePDF(TempMRFile, "2");
+            HttpWebResponse Resp1 = apicallsRest.GetTextInMachineReadablePDF(TempMRFile, DEPTH);
             String responseString1 = "";
             using (Stream stream = Resp1.GetResponseStream())
             {
@@ -96,10 +109,9 @@ namespace Doctools_Calls
             IQBotAPILibrary.JsonObjects.Doctools.PDFToText.Response r = JsonConvert.DeserializeObject<IQBotAPILibrary.JsonObjects.Doctools.PDFToText.Response>(responseString1);
 
             Output = Output + "Response Successfully Parsed"+ "\n";
-
+            if (DeleteTempFiles){File.Delete(TempMRFile);}
             List<int> TempList = new List<int>();
             int PreviousEl = 0;
-            //Console.WriteLine("Size:" + r.children.Count);
 
             Child last = r.children.Last();
 
@@ -124,7 +136,7 @@ namespace Doctools_Calls
                         //Console.WriteLine("Debug - Range: [" + Range+"]");
                         Output = Output + "Range Identified: " + Range + "\n";
 
-                        SplitPdf(DTUrl, DTPort,InputFilePath, Range);
+                        SplitPdf(DTUrl, DTPort,InputFilePath, Range, OutputRootPath);
                     }
 
                 }else if(NumberOfItemsOnPage == 0)
@@ -135,7 +147,7 @@ namespace Doctools_Calls
                     String Range = TempList[0] + "-" + TempList[TempList.Count - 1];
                     //Console.WriteLine("Debug - Range: [" + Range + "]");
                     Output = Output + "Range Identified: " + Range + "\n";
-                    SplitPdf(DTUrl, DTPort,InputFilePath, Range);
+                    SplitPdf(DTUrl, DTPort,InputFilePath, Range, OutputRootPath);
 
                     TempList.Clear();
                     PreviousEl = CurrentPage;

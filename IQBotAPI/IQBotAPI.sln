@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28306.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQBotAPILibrary", "IQBotAPILibrary\IQBotAPILibrary.csproj", "{BB4ECA82-A274-4121-8EE8-1DACCA4CB8B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zAPILibraries", "IQBotAPILibrary\zAPILibraries.csproj", "{BB4ECA82-A274-4121-8EE8-1DACCA4CB8B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTests", "ConsoleAppTests\ConsoleAppTests.csproj", "{EC6EBEC5-37E3-4D17-9AC6-04BDF2481CDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_IQBotUtilities", "ConsoleAppTests\_IQBotUtilities.csproj", "{EC6EBEC5-37E3-4D17-9AC6-04BDF2481CDE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQBot_Calls", "IQBot_Calls\IQBot_Calls.csproj", "{48D24603-8D19-49EE-B7FD-541981341F64}"
 EndProject

@@ -7,11 +7,26 @@
     <ProjectGuid>{EC6EBEC5-37E3-4D17-9AC6-04BDF2481CDE}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ConsoleAppTests</RootNamespace>
-    <AssemblyName>ConsoleAppTests</AssemblyName>
+    <AssemblyName>IQBotUtilities</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=2.5.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.5.0\lib\net461\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,25 +61,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="RunMe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Doctools_Calls\Doctools_Calls.csproj">
       <Project>{53F0DC1E-9887-4F0C-A53B-6D5698B05BBD}</Project>
       <Name>Doctools_Calls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IQBotAPILibrary\IQBotAPILibrary.csproj">
+    <ProjectReference Include="..\IQBotAPILibrary\zAPILibraries.csproj">
       <Project>{bb4eca82-a274-4121-8ee8-1dacca4cb8b7}</Project>
-      <Name>IQBotAPILibrary</Name>
+      <Name>zAPILibraries</Name>
     </ProjectReference>
     <ProjectReference Include="..\IQBot_Calls\IQBot_Calls.csproj">
       <Project>{48d24603-8d19-49ee-b7fd-541981341f64}</Project>
       <Name>IQBot_Calls</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

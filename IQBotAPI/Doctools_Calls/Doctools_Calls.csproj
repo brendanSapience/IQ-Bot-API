@@ -48,9 +48,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IQBotAPILibrary\IQBotAPILibrary.csproj">
+    <ProjectReference Include="..\IQBotAPILibrary\zAPILibraries.csproj">
       <Project>{bb4eca82-a274-4121-8ee8-1dacca4cb8b7}</Project>
-      <Name>IQBotAPILibrary</Name>
+      <Name>zAPILibraries</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
