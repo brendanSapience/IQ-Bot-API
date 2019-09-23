@@ -103,6 +103,46 @@ namespace IQBotAPILibrary.DoctoolsCalls
             return Resp;
         }
 
+        // [{  "x": 110,  "y": 710,  "width": 190,  "height": 22,  "backgroundColor": "#000000",  "opacity": 1,  "page": 1}]
+        public HttpWebResponse AnnotatePdf(String InputFilePath, String OutputFilePath, String json)
+        {
+
+            String url = this.broker.RestEndpointURL + ":" + this.broker.RestEndpointPort + "/pdf/annotate";
+
+            string CT0 = "file";
+            string fullPath0 = InputFilePath;
+            FormUpload.FileParameter f0 = new FormUpload.FileParameter(File.ReadAllBytes(fullPath0), Path.GetFileName(InputFilePath), "multipart/form-data");
+
+            Dictionary<string, object> d = new Dictionary<string, object>();
+            d.Add(CT0, f0);
+            d.Add("json", json);
+
+            string ua = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2";
+            HttpWebResponse Resp = FormUpload.MultipartFormDataPost(url, ua, d);
+
+            String GeneratedFileName = "";
+            if (InputFilePath == OutputFilePath)
+            {
+                String RootPath = Path.GetDirectoryName(OutputFilePath) + "\\";
+                String FileNameWithoutExt = Path.GetFileNameWithoutExtension(OutputFilePath);
+                String FileExtension = Path.GetExtension(OutputFilePath);
+                GeneratedFileName = RootPath + FileNameWithoutExt + "_MR_" + FileExtension;
+            }
+            else
+            {
+                GeneratedFileName = OutputFilePath;
+            }
+
+            using (Stream output = File.OpenWrite(OutputFilePath))
+            using (Stream input = Resp.GetResponseStream())
+            {
+                input.CopyTo(output);
+            }
+
+
+            return Resp;
+        }
+
         // Transform an image PDF into a machine readable PDF
         //String PathToPdf, String OCRLanguage, String PathToJsonFile
         public HttpWebResponse GetTextInMachineReadablePDF(String InputFilePath,String Depth)

@@ -25,6 +25,17 @@ namespace Doctools_Calls
             
         }
 
+        // Annotate PDF
+        public static String AnnotatePDF(String DTUrl, int DTPort, String InputFilePath, String OutputFilePath, String Json)
+        {
+            DoctoolsConnectionBroker rbroker = new DoctoolsConnectionBroker(DTUrl, DTPort);
+            _100DTRestCalls apicallsRest = new _100DTRestCalls(rbroker);
+            HttpWebResponse Resp = apicallsRest.AnnotatePdf(InputFilePath, OutputFilePath, Json);
+            HttpStatusCode code = Resp.StatusCode;
+            return code.ToString();
+
+        }
+
         // Generate a Machine Readable PDF from a Non MR Pdf File
         public static String OCRPdf(String DTUrl, int DTPort, String InputFilePath, String OutputFilePath, String Language)
         {
