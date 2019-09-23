@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -115,6 +116,7 @@ namespace IQBotAPILibrary.DoctoolsCalls
 
             Dictionary<string, object> d = new Dictionary<string, object>();
             d.Add(CT0, f0);
+
             d.Add("json", json);
 
             string ua = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2";

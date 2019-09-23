@@ -20,6 +20,9 @@ namespace ConsoleAppTests
 
             String resp = "";
 
+            resp = _v100.AnnotatePDF("http://localhost", 11051, @"C:\Users\Administrator\Desktop\customers\US MC\dd0106_Sample_ConvertedChrome_MR.pdf", @"C:\Users\Administrator\Desktop\customers\US MC\dd0106_Sample_ConvertedChrome_MR_a.pdf", "[{ \"x\": 110,  \"y\": 710,  \"width\": 190,  \"height\": 22,  \"backgroundColor\": \"#000000\",  \"opacity\": 1,  \"page\": 1}]");
+            Console.ReadKey();
+
             resp = _v100.SplitPdfsWithBlankPages("http://localhost", 11051, @"C:\Users\Administrator\Desktop\customers\CareFirst\Sample_Invoice_Combined_BlankPages.pdf", "English", @"C:\Users\Administrator\Desktop\customers\CareFirst\Temp",true);
             //resp = _v100.SplitPdfsWithBlankPages("http://localhost", 11051, @"C:\Users\Administrator\Desktop\customers\CareFirst\Sample_Invoice_Combined_BlankPages.pdf", "English");
             Console.WriteLine("DEBUG Resp:" + resp);
